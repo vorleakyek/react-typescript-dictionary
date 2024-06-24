@@ -1,35 +1,37 @@
-import { useEffect, useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import dictionaryImg from './assets/3092324.jpg';
 import './App.css';
+import TermsAndDefinitions from './components/TermsAndDefinitions';
+import InputField from './components/InputField';
+
+const terms = [
+  {
+    term: 'Ebullient',
+    definition: 'Cheerful and full of energy.',
+  },
+  {
+    term: 'Propitious',
+    definition: 'Giving or indicating a good chance of success; favorable.',
+  },
+];
 
 export default function App() {
-  const [serverData, setServerData] = useState('');
-
-  useEffect(() => {
-    async function readServerData() {
-      const resp = await fetch('/api/hello');
-      const data = await resp.json();
-
-      console.log('Data from server:', data);
-
-      setServerData(data.message);
-    }
-
-    readServerData();
-  }, []);
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div>
+      <div className="flex">
+        <div className="half">
+          <img src={dictionaryImg} alt="dictionary image" />
+        </div>
+        <div className="half">
+          <div>
+            <TermsAndDefinitions array={terms} />
+          </div>
+          <div>
+            <InputField placeHolderText="term..." />
+            <InputField placeHolderText="definition..." />
+            <button>Add Term</button>
+          </div>
+        </div>
       </div>
-      <h1>{serverData}</h1>
-    </>
+    </div>
   );
 }
