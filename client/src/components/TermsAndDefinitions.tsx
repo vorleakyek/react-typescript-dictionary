@@ -1,14 +1,15 @@
-import TermAndDefinition, { type TermDefProp } from './TermAndDefinition';
+import TermAndDefinition from './TermAndDefinition';
+import { type Dictionary } from '../api';
 
 type TermsAndDefinitionsProp = {
-  array: TermDefProp[];
+  array: Dictionary[];
 };
 export default function TermsAndDefinitions({
   array,
 }: TermsAndDefinitionsProp) {
   return (
     <>
-      {array.map((item: TermDefProp) => {
+      {array.map((item: Dictionary) => {
         return (
           <TermAndDefinition
             key={item.term}

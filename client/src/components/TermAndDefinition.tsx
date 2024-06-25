@@ -1,11 +1,7 @@
 import { FaRegTrashCan } from 'react-icons/fa6';
+import { type Dictionary } from '../api';
 
-export type TermDefProp = {
-  term: string;
-  definition: string;
-};
-
-export default function TermAndDefinition({ term, definition }: TermDefProp) {
+export default function TermAndDefinition({ term, definition }: Dictionary) {
   return (
     <>
       <div className="text-right pl-20">

@@ -31,7 +31,38 @@ app.get('/api/hello', (req, res) => {
  * It responds with `index.html` to support page refreshes with React Router.
  * This must be the _last_ route, just before errorMiddleware.
  */
-app.get('*', (req, res) => res.sendFile(`${reactStaticDir}/index.html`));
+// app.get('*', (req, res) => res.sendFile(`${reactStaticDir}/index.html`));
+
+app.get('/api/dictionary', async (req, res, next) => {
+  try {
+    const sql = `
+      select *
+      from "dictionary"
+    `;
+
+    const result = await db.query(sql);
+
+    if (!result.rows[0]) throw new ClientError(404, 'no terms found!');
+
+    res.json(result.rows);
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.post('api/addTermAndDefinition', async (req, res, next) => {
+  const { term, definition } = req.body;
+  const sql = `
+    insert into "dictionary" ("term", "definition")
+    value ($1, $2)
+    returning "term","definition"
+  `;
+
+  const params = [term, definition];
+  const result = await db.query(sql, params);
+  const response = result.rows[0];
+  res.status(200).json(response);
+});
 
 app.use(errorMiddleware);
 

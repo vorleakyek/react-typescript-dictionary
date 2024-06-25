@@ -2,19 +2,42 @@ import dictionaryImg from './assets/3092324.jpg';
 import './App.css';
 import TermsAndDefinitions from './components/TermsAndDefinitions';
 import InputField from './components/InputField';
-
-const terms = [
-  {
-    term: 'Ebullient',
-    definition: 'Cheerful and full of energy.',
-  },
-  {
-    term: 'Propitious',
-    definition: 'Giving or indicating a good chance of success; favorable.',
-  },
-];
+import { useState, useEffect } from 'react';
+// import TermAndDefinition from './components/TermAndDefinition';
+import { type Dictionary, fetchDictionary, addTermAndDef } from './api';
 
 export default function App() {
+  const [dictionary, setDictionary] = useState<Dictionary[]>([]);
+  const [term, setTerm] = useState<string>('');
+  const [definition, setDefinition] = useState<string>('');
+
+  useEffect(() => {
+    async function fetchingDict() {
+      try {
+        const data = await fetchDictionary();
+        setDictionary(data);
+      } catch (e) {
+        throw new Error('error with fetch Dictionary');
+      }
+    }
+
+    fetchingDict();
+  }, [dictionary]);
+
+  async function handleAddTerm() {
+    const newTermAndDef = {
+      term,
+      definition,
+    };
+
+    try {
+      const data = await addTermAndDef(newTermAndDef);
+      setDefinition(data);
+    } catch (e) {
+      throw new Error('error with adding new term and def');
+    }
+  }
+
   return (
     <div>
       <div className="flex">
@@ -23,12 +46,18 @@ export default function App() {
         </div>
         <div className="half">
           <div>
-            <TermsAndDefinitions array={terms} />
+            <TermsAndDefinitions array={dictionary} />
           </div>
           <div>
-            <InputField placeHolderText="term..." />
-            <InputField placeHolderText="definition..." />
-            <button>Add Term</button>
+            <InputField
+              onChange={(event) => setTerm(event.target.value)}
+              placeHolderText="term..."
+            />
+            <InputField
+              onChange={(event) => setDefinition(event.target.value)}
+              placeHolderText="definition..."
+            />
+            <button onClick={handleAddTerm}>Add Term</button>
           </div>
         </div>
       </div>

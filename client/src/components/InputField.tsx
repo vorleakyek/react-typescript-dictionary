@@ -1,11 +1,20 @@
 type InputFieldProp = {
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   placeHolderText: string;
 };
 
-export default function InputField({ placeHolderText }: InputFieldProp) {
+export default function InputField({
+  onChange,
+  placeHolderText,
+}: InputFieldProp) {
   return (
     <>
-      <input className="mr-10" type="text" placeholder={placeHolderText} />
+      <input
+        onChange={onChange}
+        className="mr-10"
+        type="text"
+        placeholder={placeHolderText}
+      />
     </>
   );
 }
