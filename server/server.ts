@@ -50,18 +50,49 @@ app.get('/api/dictionary', async (req, res, next) => {
   }
 });
 
-app.post('api/addTermAndDefinition', async (req, res, next) => {
-  const { term, definition } = req.body;
-  const sql = `
+app.post('/api/addTermAndDefinition', async (req, res, next) => {
+  try {
+    const { term, definition } = req.body;
+    const sql = `
     insert into "dictionary" ("term", "definition")
-    value ($1, $2)
+    values ($1, $2)
     returning "term","definition"
   `;
 
-  const params = [term, definition];
-  const result = await db.query(sql, params);
-  const response = result.rows[0];
-  res.status(200).json(response);
+    const params = [term, definition];
+    const result = await db.query(sql, params);
+    const response = result.rows[0];
+    res.status(200).json(response);
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.delete('/api/delete/:term', async (req, res, next) => {
+  try {
+    const term = req.params.term;
+
+    if (!term) {
+      throw new ClientError(400, 'term is needed');
+    }
+
+    const sql = `
+    delete from "dictionary"
+      where "term" = $1
+      returning "term", "definition"
+  `;
+
+    const param = [term];
+    const result = await db.query(sql, param);
+
+    if (result.rows.length === 0) {
+      throw new ClientError(400, 'no term found!');
+    }
+    const deletedTerm = result.rows;
+    res.sendStatus(204);
+  } catch (e) {
+    next(e);
+  }
 });
 
 app.use(errorMiddleware);

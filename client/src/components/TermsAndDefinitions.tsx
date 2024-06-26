@@ -3,9 +3,11 @@ import { type Dictionary } from '../api';
 
 type TermsAndDefinitionsProp = {
   array: Dictionary[];
+  setter: React.Dispatch<React.SetStateAction<string>>;
 };
 export default function TermsAndDefinitions({
   array,
+  setter,
 }: TermsAndDefinitionsProp) {
   return (
     <>
@@ -15,6 +17,7 @@ export default function TermsAndDefinitions({
             key={item.term}
             term={item.term}
             definition={item.definition}
+            setDic={setter}
           />
         );
       })}

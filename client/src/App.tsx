@@ -33,6 +33,9 @@ export default function App() {
     try {
       const data = await addTermAndDef(newTermAndDef);
       setDefinition(data);
+      setTerm('');
+      setDefinition('');
+      console.log(data);
     } catch (e) {
       throw new Error('error with adding new term and def');
     }
@@ -46,14 +49,16 @@ export default function App() {
         </div>
         <div className="half">
           <div>
-            <TermsAndDefinitions array={dictionary} />
+            <TermsAndDefinitions array={dictionary} setter={setDefinition} />
           </div>
           <div>
             <InputField
+              value={term}
               onChange={(event) => setTerm(event.target.value)}
               placeHolderText="term..."
             />
             <InputField
+              value={definition}
               onChange={(event) => setDefinition(event.target.value)}
               placeHolderText="definition..."
             />
