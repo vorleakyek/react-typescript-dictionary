@@ -1,4 +1,5 @@
 export type Dictionary = {
+  id?: number;
   term: string;
   definition: string;
 };

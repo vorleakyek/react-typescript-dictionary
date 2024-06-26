@@ -56,7 +56,7 @@ app.post('/api/addTermAndDefinition', async (req, res, next) => {
     const sql = `
     insert into "dictionary" ("term", "definition")
     values ($1, $2)
-    returning "term","definition"
+    returning *
   `;
 
     const params = [term, definition];
@@ -93,6 +93,21 @@ app.delete('/api/delete/:term', async (req, res, next) => {
   } catch (e) {
     next(e);
   }
+});
+
+app.put('/api/update/term-definition', async (req, res, next) => {
+  const { term, editTerm, editDef } = req.body;
+  const sql = `
+    update "dictionary"
+    set "term" = $1,
+        "definition" = $2
+    where "term" = $3
+    returning *
+  `;
+  const params = [editTerm, editDef, term];
+  const result = await db.query(sql, params);
+  const response = result.rows[0];
+  res.json(response);
 });
 
 app.use(errorMiddleware);

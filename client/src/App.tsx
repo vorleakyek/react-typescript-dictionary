@@ -43,28 +43,41 @@ export default function App() {
 
   return (
     <div>
-      <div className="flex">
-        <div className="half">
-          <img src={dictionaryImg} alt="dictionary image" />
-        </div>
-        <div className="half">
-          <div>
-            <TermsAndDefinitions array={dictionary} setter={setDefinition} />
+      <h1>Mini-Projects</h1>
+      <div>
+        <h2>Dictionary</h2>
+        <div className="flex">
+          <div className="half">
+            <img src={dictionaryImg} alt="dictionary image" />
           </div>
-          <div>
-            <InputField
-              value={term}
-              onChange={(event) => setTerm(event.target.value)}
-              placeHolderText="term..."
-            />
-            <InputField
-              value={definition}
-              onChange={(event) => setDefinition(event.target.value)}
-              placeHolderText="definition..."
-            />
-            <button onClick={handleAddTerm}>Add Term</button>
+          <div className="half">
+            <div>
+              <TermsAndDefinitions
+                array={dictionary}
+                setDic={setDictionary}
+                setTerm={setTerm}
+                setDefinition={setDefinition}
+              />
+            </div>
+            <div>
+              <InputField
+                value={term}
+                onChange={(event) => setTerm(event.target.value)}
+                placeHolderText="term..."
+              />
+              <InputField
+                value={definition}
+                onChange={(event) => setDefinition(event.target.value)}
+                placeHolderText="definition..."
+              />
+              <button onClick={handleAddTerm}>Add Term</button>
+            </div>
           </div>
         </div>
+      </div>
+
+      <div>
+        <h2>Table</h2>
       </div>
     </div>
   );
